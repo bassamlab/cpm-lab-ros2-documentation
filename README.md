@@ -2,6 +2,8 @@
 
 This repository contains HTML-based [Sphinx](https://www.sphinx-doc.org/) documentation. You can build, preview, and update the documentation easily using Visual Studio Code with a dev container.
 
+You can find the deployed documentaion [here](https://bassamlab.github.io/cpm-lab-ros2-documentation/).
+
 ## 🧰 Prerequisites
 
 - [Docker](https://www.docker.com/) installed and running
