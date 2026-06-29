@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html :class="{ 'dark' : darkMode === true }" data-content_root="../" lang="en" x-data="{ darkMode: $persist(window.matchMedia('(prefers-color-scheme: dark)').matches), activeSection: ''}">
+<head>
+<script>
+    (function () {
+      // Set initial color scheme
+      if ((localStorage.getItem("_x_darkMode") === "true") || (window.matchMedia("(prefers-color-scheme: dark)").matches)) {
+        document.documentElement.classList.add("dark");
+      }
+
+      // Watch for media preference changes
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+        localStorage.setItem("_x_darkMode", event.matches);
+        document.documentElement.classList.toggle("dark", event.matches);
+      });
+    })();
+  </script>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta charset="utf-8"/>
+<meta content="#ffffff" media="(prefers-color-scheme: light)" name="theme-color"/>
+<meta content="#030711" media="(prefers-color-scheme: dark)" name="theme-color"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>External Motions Planner | CPM Lab</title>
+<meta content="External Motions Planner | CPM Lab" property="og:title"/>
+<meta content="External Motions Planner | CPM Lab" name="twitter:title"/>
+<link href="../_static/pygments.css?v=8d216cef" rel="stylesheet" type="text/css"/>
+<link href="../_static/theme.css?v=d6d7c91b" rel="stylesheet" type="text/css"/>
+<link href="../search.html" rel="search" title="Search"/>
+<link href="../genindex.html" rel="index" title="Index"/>
+<link href="../trouble_shooting_guide.html" rel="next" title="Troubleshooting Guide"/>
+<link href="evaluate_in_cpm_lab.html" rel="prev" title="Evaluate in the CPM Lab"/>
+</head>
+<body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
+<div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
+      Skip to content
+    </a><header class="sticky top-0 z-40 w-full border-b shadow-xs border-border bg-background/90 backdrop-blur"><div class="container flex items-center h-14">
+<div class="hidden mr-4 md:flex">
+<a class="flex items-center mr-6" href="../index.html">
+<img alt="Logo" class="mr-2 hidden dark:block" height="24" src="../_static/logo-dark.svg" width="24"/>
+<img alt="Logo" class="mr-2 dark:hidden" height="24" src="../_static/logo.svg" width="24"/><span class="hidden font-bold sm:inline-block text-clip whitespace-nowrap">CPM Lab</span>
+</a></div><button @click="showSidebar = true" class="inline-flex items-center justify-center h-10 px-0 py-2 mr-2 text-base font-medium transition-colors rounded-md hover:text-accent-foreground hover:bg-transparent md:hidden" type="button">
+<svg aria-hidden="true" fill="currentColor" height="24" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M152.587 825.087q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440Zm0-203.587q-19.152 0-32.326-13.174T107.087 576q0-19.152 13.174-32.326t32.326-13.174h320q19.152 0 32.326 13.174T518.087 576q0 19.152-13.174 32.326T472.587 621.5h-320Zm0-203.587q-19.152 0-32.326-13.174t-13.174-32.326q0-19.152 13.174-32.326t32.326-13.174h440q19.152 0 32.326 13.174t13.174 32.326q0 19.152-13.174 32.326t-32.326 13.174h-440ZM708.913 576l112.174 112.174q12.674 12.674 12.674 31.826t-12.674 31.826Q808.413 764.5 789.261 764.5t-31.826-12.674l-144-144Q600 594.391 600 576t13.435-31.826l144-144q12.674-12.674 31.826-12.674t31.826 12.674q12.674 12.674 12.674 31.826t-12.674 31.826L708.913 576Z"></path>
+</svg>
+<span class="sr-only">Toggle navigation menu</span>
+</button>
+<div class="flex items-center justify-between flex-1 gap-2 sm:gap-4 md:justify-end">
+<div class="flex-1 w-full md:w-auto md:flex-none"><form @keydown.k.window.meta="$refs.search.focus()" action="../search.html" class="relative flex items-center group" id="searchbox" method="get">
+<input aria-label="Search the docs" class="inline-flex items-center font-medium transition-colors bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background border border-input hover:bg-accent focus:bg-accent hover:text-accent-foreground focus:text-accent-foreground hover:placeholder-accent-foreground py-2 px-4 relative h-9 w-full justify-start rounded-[0.5rem] text-sm text-muted-foreground sm:pr-12 md:w-40 lg:w-64" id="search-input" name="q" placeholder="Search ..." type="search" x-ref="search"/>
+<kbd class="pointer-events-none absolute right-1.5 top-2 hidden h-5 select-none text-muted-foreground items-center gap-1 rounded border border-border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex group-hover:bg-accent group-hover:text-accent-foreground">
+<span class="text-xs">⌘</span>
+    K
+  </kbd>
+</form>
+</div>
+<nav class="flex items-center gap-1">
+<button @click="darkMode = !darkMode" class="relative inline-flex items-center justify-center px-0 text-sm font-medium transition-colors rounded-md hover:bg-accent hover:text-accent-foreground h-9 w-9" title="Toggle color scheme" type="button">
+<svg class="absolute transition-all scale-100 rotate-0 dark:-rotate-90 dark:scale-0" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 685q45.456 0 77.228-31.772Q589 621.456 589 576q0-45.456-31.772-77.228Q525.456 467 480 467q-45.456 0-77.228 31.772Q371 530.544 371 576q0 45.456 31.772 77.228Q434.544 685 480 685Zm0 91q-83 0-141.5-58.5T280 576q0-83 58.5-141.5T480 376q83 0 141.5 58.5T680 576q0 83-58.5 141.5T480 776ZM80 621.5q-19.152 0-32.326-13.174T34.5 576q0-19.152 13.174-32.326T80 530.5h80q19.152 0 32.326 13.174T205.5 576q0 19.152-13.174 32.326T160 621.5H80Zm720 0q-19.152 0-32.326-13.174T754.5 576q0-19.152 13.174-32.326T800 530.5h80q19.152 0 32.326 13.174T925.5 576q0 19.152-13.174 32.326T880 621.5h-80Zm-320-320q-19.152 0-32.326-13.174T434.5 256v-80q0-19.152 13.174-32.326T480 130.5q19.152 0 32.326 13.174T525.5 176v80q0 19.152-13.174 32.326T480 301.5Zm0 720q-19.152 0-32.326-13.17Q434.5 995.152 434.5 976v-80q0-19.152 13.174-32.326T480 850.5q19.152 0 32.326 13.174T525.5 896v80q0 19.152-13.174 32.33-13.174 13.17-32.326 13.17ZM222.174 382.065l-43-42Q165.5 327.391 166 308.239t13.174-33.065q13.435-13.674 32.587-13.674t32.065 13.674l42.239 43q12.674 13.435 12.555 31.706-.12 18.272-12.555 31.946-12.674 13.674-31.445 13.413-18.772-.261-32.446-13.174Zm494 494.761-42.239-43q-12.674-13.435-12.674-32.087t12.674-31.565Q686.609 756.5 705.38 757q18.772.5 32.446 13.174l43 41.761Q794.5 824.609 794 843.761t-13.174 33.065Q767.391 890.5 748.239 890.5t-32.065-13.674Zm-42-494.761Q660.5 369.391 661 350.62q.5-18.772 13.174-32.446l41.761-43Q728.609 261.5 747.761 262t33.065 13.174q13.674 13.435 13.674 32.587t-13.674 32.065l-43 42.239q-13.435 12.674-31.706 12.555-18.272-.12-31.946-12.555Zm-495 494.761Q165.5 863.391 165.5 844.239t13.674-32.065l43-42.239q13.435-12.674 32.087-12.674t31.565 12.674Q299.5 782.609 299 801.38q-.5 18.772-13.174 32.446l-41.761 43Q231.391 890.5 212.239 890t-33.065-13.174ZM480 576Z"></path>
+</svg>
+<svg class="absolute transition-all scale-0 rotate-90 dark:rotate-0 dark:scale-100" fill="currentColor" height="16" viewbox="0 96 960 960" width="16" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 936q-151 0-255.5-104.5T120 576q0-138 90-239.5T440 218q25-3 39 18t-1 44q-17 26-25.5 55t-8.5 61q0 90 63 153t153 63q31 0 61.5-9t54.5-25q21-14 43-1.5t19 39.5q-14 138-117.5 229T480 936Zm0-80q88 0 158-48.5T740 681q-20 5-40 8t-40 3q-123 0-209.5-86.5T364 396q0-20 3-40t8-40q-78 32-126.5 102T200 576q0 116 82 198t198 82Zm-10-270Z"></path>
+</svg>
+</button>
+</nav>
+</div>
+</div>
+</header>
+<div class="flex-1"><div class="container md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10"><aside :aria-hidden="!showSidebar" :class="{ 'translate-x-0': showSidebar }" class="fixed inset-y-0 left-0 md:top-14 z-50 md:z-30 bg-background md:bg-transparent transition-all duration-100 -translate-x-full md:translate-x-0 ml-0 p-6 md:p-0 md:-ml-2 md:h-[calc(100vh-3.5rem)] w-5/6 md:w-full overflow-y-auto border-r border-border md:sticky" id="left-sidebar">
+<a class="justify-start text-sm md:!hidden bg-background" href="../index.html">
+<img alt="Logo" class="mr-2 hidden dark:block" height="16" src="../_static/logo-dark.svg" width="16"/>
+<img alt="Logo" class="mr-2 dark:hidden" height="16" src="../_static/logo.svg" width="16"/><span class="font-bold text-clip whitespace-nowrap">CPM Lab</span>
+</a>
+<div class="relative overflow-hidden md:overflow-auto my-4 md:my-0">
+<div class="overflow-y-auto h-full w-full relative pr-6"><nav class="table w-full min-w-full my-6 lg:my-8">
+<p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="../installation/installation.html">Installation<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul x-cloak="" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="../installation/install_from_deb.html">Install from Debian Packages</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../installation/install_sigmarl_within_cpm_lab.html">Install SigmaRL within CPM Lab</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current" x-data="{ expanded: $el.classList.contains('current') ? true : false }"><a :class="{ 'expanded' : expanded }" @click="expanded = !expanded" class="reference internal expandable" href="experiment.html">Experiment<button @click.prevent.stop="expanded = !expanded" type="button" x-cloak=""><span class="sr-only"></span><svg fill="currentColor" height="18px" stroke="none" viewbox="0 0 24 24" width="18px" xmlns="http://www.w3.org/2000/svg"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"></path></svg></button></a><ul class="current" x-show="expanded">
+<li class="toctree-l2"><a class="reference internal" href="evaluate_in_sigmarl.html">Evaluate in SigmaRL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluate_in_cpm_lab.html">Evaluate in the CPM Lab</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">External Motions Planner</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../trouble_shooting_guide.html">Troubleshooting Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../literature.html">Literature</a></li>
+</ul>
+</nav>
+</div>
+</div>
+<button @click="showSidebar = false" class="absolute md:hidden right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100" type="button">
+<svg class="h-4 w-4" fill="currentColor" height="24" stroke="none" viewbox="0 96 960 960" width="24" xmlns="http://www.w3.org/2000/svg">
+<path d="M480 632 284 828q-11 11-28 11t-28-11q-11-11-11-28t11-28l196-196-196-196q-11-11-11-28t11-28q11-11 28-11t28 11l196 196 196-196q11-11 28-11t28 11q11 11 11 28t-11 28L536 576l196 196q11 11 11 28t-11 28q-11 11-28 11t-28-11L480 632Z"></path>
+</svg>
+</button>
+</aside>
+<main class="relative py-6 lg:gap-10 lg:py-8 xl:grid xl:grid-cols-[1fr_300px]">
+<div class="w-full min-w-0 mx-auto">
+<nav aria-label="breadcrumbs" class="flex items-center mb-4 space-x-1 text-sm text-muted-foreground">
+<a class="overflow-hidden text-ellipsis whitespace-nowrap hover:text-foreground" href="../index.html">
+<span class="hidden md:inline">CPM Lab</span>
+<svg aria-label="Home" class="md:hidden" fill="currentColor" height="18" stroke="none" viewbox="0 96 960 960" width="18" xmlns="http://www.w3.org/2000/svg">
+<path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
+</svg>
+</a>
+<div class="mr-1">/</div><a class="hover:text-foreground overflow-hidden text-ellipsis whitespace-nowrap" href="experiment.html">Experiment</a>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">External Motions Planner</span>
+</nav>
+<div id="content" role="main">
+<section id="external-motions-planner">
+<span id="id1"></span><h1>External Motions Planner</h1>
+<p>This guide walks you through setting up an external motions planner in the CPM Lab. It assumes you installed the CPM Lab using <a class="reference internal" href="../installation/install_from_deb.html#install-from-deb"><span class="std std-ref">Install from Debian Packages</span></a> and want to use an integrated motion planner.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Prerequisites: have ROS2 sourced (see your distribution), the CPM Lab packages installed, and the <a class="reference download internal" download="" href="../_downloads/b4fb7d69025dabf41b4aecfec945a1ee/default.rviz"><code class="xref download docutils literal notranslate"><span class="pre">RViz</span> <span class="pre">configuration</span></code></a>.</p>
+</div>
+<section id="launch-rviz">
+<h2>1. Launch RViz</h2>
+<p>Download the CPM-Lab RViz configuration and launch RViz with your ROS2 setup.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;ros2-distro&gt;/setup.bash
+</span><span id="line-2"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">21</span>
+</span><span id="line-3">rviz2<span class="w"> </span>-d<span class="w"> </span>&lt;path-to-rviz-config&gt;
+</span></code></pre></div>
+</div>
+</section>
+<section id="configure-the-control-center">
+<h2>2. Configure the Control Center</h2>
+<p>When you start the Control Center you may be presented with a few configuration screens.</p>
+<figure class="align-center" id="id2">
+<a class="reference internal image-reference" href="../_images/0.png"><img alt="FastDDS Warning Screen" src="../_images/0.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">FastDDS Warning Screen</span></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The warning about FastDDS is expected if you have not switched to an alternative RMW implementation. You can choose to ignore the warning and continue with FastDDS, but we recommend switching to CycloneDDS or Zenoh for a more stable experience. If you switch to an alternative RMW implementation you will not see this warning.</p>
+</div>
+<figure class="align-center" id="id3">
+<a class="reference internal image-reference" href="../_images/1.png"><img alt="FastDDS Discovery Server Setup Screen" src="../_images/1.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">FastDDS Discovery Server Setup Screen</span></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The FastDDS Discovery Server is an advanced discovery mode and is not required for a basic simulation. You can skip it for typical simulation runs. We again recommend switching to an alternative RMW implementation instead of using FastDDS for a more stable experience. If you switch to an alternative RMW implementation you will not see this screen.</p>
+</div>
+<figure class="align-center" id="id4">
+<a class="reference internal image-reference" href="../_images/2.png"><img alt="Indoor Positioning System Setup Screen" src="../_images/2.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Indoor Positioning System Setup Screen</span></p>
+</figcaption>
+</figure>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If you installed the indoor positioning package the Control Center may prompt to start it. For simulations this is optional and can be skipped.</p>
+</div>
+<p>Next, select the map to use for the simulation (maps starting with “Lab” are provided). In this guide we chose “Lab Outer Circle”. Click Start to launch the map server.</p>
+<figure class="align-center" id="id5">
+<a class="reference internal image-reference" href="../_images/3.png"><img alt="Map Selection Screen" src="../_images/3.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Map Selection Screen</span></p>
+</figcaption>
+</figure>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If you run FastDDS as the RMW implementation the map might not appear in RViz due to known QoS incompatibilities. The simulation and planners still work; the missing map is a display issue.</p>
+</div>
+<figure class="align-center" id="id6">
+<a class="reference internal image-reference" href="../_images/4.png"><img alt="Map not displayed in RViz with FastDDS" src="../_images/4.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Map not displayed in RViz with FastDDS</span></p>
+</figcaption>
+</figure>
+<p>If you are using CycloneDDS or Zenoh you should see the map in RViz immediately.</p>
+<figure class="align-center" id="id7">
+<a class="reference internal image-reference" href="../_images/4_1.png"><img alt="Map displayed in RViz with CycloneDDS" src="../_images/4_1.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Map displayed in RViz with CycloneDDS</span></p>
+</figcaption>
+</figure>
+<p>After the map server is running, start one or more vehicle simulations. Select the vehicle(s) in the Control Center selection screen and click Start.</p>
+<figure class="align-center" id="id8">
+<a class="reference internal image-reference" href="../_images/5.png"><img alt="Vehicle Selection Screen" src="../_images/5.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Vehicle Selection Screen</span></p>
+</figcaption>
+</figure>
+<p>Start a motion planner next. Uncheck “Use internal ROS2 HLC” and simply click “Next” to proceed to the experiment setup screen.</p>
+<figure class="align-center" id="id9">
+<a class="reference internal image-reference" href="../_images/6.png"><img alt="Motion Planner Selection Screen" src="../_images/6.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Motion Planner Selection Screen</span></p>
+</figcaption>
+</figure>
+<p>Open a second terminal and start your external motion planner. Make sure to source ROS2 and set the ROS_DOMAIN_ID to 1.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;ros2-distro&gt;/setup.bash
+</span><span id="line-2"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">1</span>
+</span><span id="line-3">ros2<span class="w"> </span>launch<span class="w"> </span>cpm_lab_sfb_py<span class="w"> </span>sfb_planner.launch.py<span class="w"> </span>vehicle_ids:<span class="o">=[</span><span class="m">1</span>,2,3<span class="o">]</span><span class="w"> </span>period:<span class="o">=</span><span class="m">100</span>
+</span></code></pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The example above launches the sfb motion planner with a 100ms update period for vehicles 1, 2, and 3. Adjust the command as needed for your specific motion planner and configuration.</p>
+</div>
+<figure class="align-center" id="id10">
+<a class="reference internal image-reference" href="../_images/7.png"><img alt="Motion Planner in Second Terminal" src="../_images/7.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Motion Planner in Second Terminal</span></p>
+</figcaption>
+</figure>
+<p>In the experiment setup screen you can set the motion planner update rate (ms) and start the bridge by clicking “Deploy”. The bridge will query each component (vehicles and planner) for readiness; once all components report ready the Control Center enables the “Start” button. If you use FastDDS you may then also see the map in RViz. You should see the motion planner communicate with the Control Center in the terminal output.</p>
+<figure class="align-center" id="id11">
+<a class="reference internal image-reference" href="../_images/8.png"><img alt="Experiment Setup Screen" src="../_images/8.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Experiment Setup Screen</span></p>
+</figcaption>
+</figure>
+<p>Click “Start” to begin the simulation. Vehicles should move in RViz according to the motion planner commands.</p>
+<figure class="align-center" id="id12">
+<a class="reference internal image-reference" href="../_images/9.png"><img alt="Simulation Running in RViz" src="../_images/9.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Simulation Running in RViz</span></p>
+</figcaption>
+</figure>
+<p>Click “Stop” to stop the simulation. You should see the motion planner stopping as well. Closing RViz will also close the Control Center and any components it started but not the external motion planner you started in the second terminal. You can stop the motion planner with Ctrl+C in its terminal.</p>
+<figure class="align-center" id="id13">
+<a class="reference internal image-reference" href="../_images/10.png"><img alt="Simulation Stopped" src="../_images/10.png" style="width: 600px;"/>
+</a>
+<figcaption>
+<p><span class="caption-text">Simulation Stopped</span></p>
+</figcaption>
+</figure>
+</section>
+<section id="optional-advanced-discovery-modes">
+<h2>Optional: Advanced Discovery Modes</h2>
+<p><strong>Using FastDDS Discovery Server</strong></p>
+<p>Export the discovery server address before launching RViz and use the same address when starting the FastDDS Discovery Server in the Control Center. Components started by the Control Center will use that discovery server address automatically.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;ros2-distro&gt;/setup.bash
+</span><span id="line-2"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">21</span>
+</span><span id="line-3"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DISCOVERY_SERVER</span><span class="o">=</span>&lt;ip-address&gt;:11811
+</span><span id="line-4">rviz2<span class="w"> </span>-d<span class="w"> </span>&lt;path-to-rviz-config&gt;
+</span></code></pre></div>
+</div>
+<p><strong>Using Eclipse Zenoh</strong></p>
+<p>Start the Zenoh router in a separate terminal before launching RViz. You only need to start the router once and keep it running for all Zenoh-based ROS2 communication.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
+</span><span id="line-2">ros2<span class="w"> </span>run<span class="w"> </span>rmw_zenoh_cpp<span class="w"> </span>rmw_zenohd
+</span></code></pre></div>
+</div>
+<p>Then, in a second terminal, set the RMW implementation to Zenoh and launch RViz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;ros2-distro&gt;/setup.bash
+</span><span id="line-2"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">21</span>
+</span><span id="line-3"><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_zenoh_cpp
+</span><span id="line-4">rviz2<span class="w"> </span>-d<span class="w"> </span>&lt;path-to-rviz-config&gt;
+</span></code></pre></div>
+</div>
+<p><strong>Using CycloneDDS</strong></p>
+<p>Set the RMW implementation before launching RViz:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="nb">source</span><span class="w"> </span>/opt/ros/&lt;ros2-distro&gt;/setup.bash
+</span><span id="line-2"><span class="nb">export</span><span class="w"> </span><span class="nv">ROS_DOMAIN_ID</span><span class="o">=</span><span class="m">21</span>
+</span><span id="line-3"><span class="nb">export</span><span class="w"> </span><span class="nv">RMW_IMPLEMENTATION</span><span class="o">=</span>rmw_cyclonedds_cpp
+</span><span id="line-4">rviz2<span class="w"> </span>-d<span class="w"> </span>&lt;path-to-rviz-config&gt;
+</span></code></pre></div>
+</div>
+</section>
+</section>
+</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
+<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
+<ul>
+<li><a :data-current="activeSection === '#launch-rviz'" class="reference internal" href="#launch-rviz">1. Launch RViz</a></li>
+<li><a :data-current="activeSection === '#configure-the-control-center'" class="reference internal" href="#configure-the-control-center">2. Configure the Control Center</a></li>
+<li><a :data-current="activeSection === '#optional-advanced-discovery-modes'" class="reference internal" href="#optional-advanced-discovery-modes">Optional: Advanced Discovery Modes</a></li>
+</ul>
+</div>
+</aside>
+</main>
+</div>
+</div><footer class="py-6 border-t border-border md:py-0">
+<div class="container flex flex-col items-center justify-between gap-4 md:h-24 md:flex-row">
+<div class="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+<p class="text-sm leading-loose text-center text-muted-foreground md:text-left">© 2025 Professorship for Adaptive Behavior of Autonomous Vehicles at University of the Bundeswehr Munich Built with <a class="font-medium underline underline-offset-4" href="https://www.sphinx-doc.org" rel="noreferrer">Sphinx 9.1.0</a></p>
+</div>
+</div>
+</footer>
+</div>
+<script src="../_static/documentation_options.js?v=d45e8c67"></script>
+<script src="../_static/doctools.js?v=fd6eb6e6"></script>
+<script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+<script defer="defer" src="../_static/theme.js?v=5db23cf8"></script>
+</body>
+</html>
