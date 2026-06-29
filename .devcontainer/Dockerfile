@@ -7,6 +7,7 @@ ENV LC_ALL=C.UTF-8
 # Install additional OS packages for Git and SSH (e.g., needed by VS Code extensions)
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
     git \
+    make \
     openssh-client \
  && rm -rf /var/lib/apt/lists/*
 
